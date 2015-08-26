@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+sourceCompatibility = '1.8'
+
+mainClassName = 'in.aesh.align.Main'
+
+repositories {
+    mavenCentral()  
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+}
+
+dependencies {
+    compile 'edu.cmu.sphinx:sphinx4-core:1.0-SNAPSHOT'
+    compile 'edu.cmu.sphinx:sphinx4-data:1.0-SNAPSHOT'
+    compile 'edu.cmu.sphinx:sphinx4-samples:1.0-SNAPSHOT'
+    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'net.sf.jopt-simple:jopt-simple:4.9-beta-1'
+}
+
+test {
+    testLogging {
+        exceptionFormat = 'full'
+    }
+}
+
+jar {
+    manifest { attributes 'Main-Class': 'in.aesh.align.Main' }
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
