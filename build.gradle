@@ -15,6 +15,7 @@ dependencies {
     compile 'edu.cmu.sphinx:sphinx4-data:1.0-SNAPSHOT'
     compile 'edu.cmu.sphinx:sphinx4-samples:1.0-SNAPSHOT'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.guava:guava:18.0'
     compile 'net.sf.jopt-simple:jopt-simple:4.9-beta-1'
 }
 
@@ -29,3 +30,8 @@ jar {
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
+gradle.projectsEvaluated {
+   tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+}

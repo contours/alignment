@@ -1,22 +1,12 @@
 package in.aesh.align;
 
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
 import edu.cmu.sphinx.alignment.LongTextAligner;
 import edu.cmu.sphinx.api.SpeechAligner;
-import edu.cmu.sphinx.linguist.dictionary.Pronunciation;
-import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.result.WordResult;
-import edu.cmu.sphinx.util.TimeFrame;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -70,8 +60,12 @@ public class Main {
         
         gson = new GsonBuilder();
         gson.setPrettyPrinting();
+        
         gson.registerTypeAdapter(WordResult.class, new WordResultDeserializer());
         gson.registerTypeAdapter(WordResult.class, new WordResultSerializer());
+        gson.registerTypeAdapter(Turn.class, new TurnDeserializer());
+        gson.registerTypeAdapter(AlignedTurn.class, new AlignedTurnSerializer());
+        gson.registerTypeAdapter(Segment.class, new SegmentSerializer());
         
         audioUrl = audioFile.toURI().toURL();
         transcript = gson.create().fromJson(new FileReader(transcriptFile), Transcript.class);
@@ -113,35 +107,7 @@ public class Main {
         }
         
         long duration = getAudioDuration();
-        transcript.setAlignment(tokens, results, duration);
-        
-        System.out.println(gson.create().toJson(transcript));
+        Transcript alignedTranscript = transcript.align(tokens, results, duration);
+        System.out.println(gson.create().toJson(alignedTranscript));
     }
-    
-    private class WordResultSerializer implements JsonSerializer<WordResult> {
-        @Override
-        public JsonElement serialize (WordResult wr, Type type,
-                JsonSerializationContext ctx) {
-            JsonObject o = new JsonObject();
-            o.addProperty("word", wr.getWord().getSpelling());
-            o.addProperty("start", wr.getTimeFrame().getStart());
-            o.addProperty("end", wr.getTimeFrame().getEnd());
-            return o;
-        }
-    }
-    
-    private class WordResultDeserializer implements JsonDeserializer<WordResult> {
-        @Override
-        public WordResult deserialize(JsonElement json, Type type, JsonDeserializationContext ctx) {
-            JsonObject o = (JsonObject) json;
-            String token = o.getAsJsonPrimitive("word").getAsString();
-            long start = o.getAsJsonPrimitive("start").getAsLong();
-            long end = o.getAsJsonPrimitive("end").getAsLong();
-            return new WordResult(
-                    new Word(token, new Pronunciation[0], false),
-                    new TimeFrame(start, end),
-                    0.0, 0.0);
-        }
-    }
-    
 }
