@@ -23,7 +23,7 @@ u-%.wav: U%_Audio.mp3
 		$@
 
 u-%.speakers: 
-	cp ../corenlp/data/in/U-$*.speakers .
+	cp ../corenlp/data/in/U-$*.speakers $@
 
 u-%.txt:
 	./cleantext.sed < ../corenlp/data/in/U-$*.txt > $@
