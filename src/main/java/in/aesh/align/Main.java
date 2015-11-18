@@ -91,7 +91,7 @@ public class Main {
 
         SpeechAligner aligner = new SpeechAligner(ACOUSTIC_MODEL_PATH, DICTIONARY_PATH, null);
         
-        String text = transcript.getText().replace("--", "");
+        String text = transcript.getText();
         List<String> tokens = aligner.sentenceToWords(aligner.getTokenizer().expand(text));
         
         if (results == null) {
