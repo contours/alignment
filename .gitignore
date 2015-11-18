@@ -4,4 +4,8 @@
 build/
 *_Audio.mp3
 *.wav
+*-transcript.json
+*-untimed.json
+*.speakers
+*.txt
 alignment.log
