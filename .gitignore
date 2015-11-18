@@ -2,3 +2,6 @@
 .gradle/
 .nb-gradle/
 build/
+*_Audio.mp3
+*.wav
+alignment.log
