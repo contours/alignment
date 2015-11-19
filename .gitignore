@@ -2,7 +2,7 @@
 .gradle/
 .nb-gradle/
 build/
-*_Audio.mp3
+*.mp3
 *.wav
 *-transcript.json
 *-untimed.json
