@@ -13,7 +13,7 @@ s/\([a-zA-Z0-9]\)\(\-\{2,\}\)\([a-zA-Z0-9]\)/\1, \3/g
 s/\-\{2,\}\([^a-zA-Z0-9]\)/\1/g
 
 # Remove two or more dashes after punctuation.
-s/\([^a-zA-Z0-9]\)\-\{2,\}/\1/g
+s/\([^a-zA-Z0-9]\)\-\{2,\}/\1 /g
 
 # Changes slashes to commas.
 s/\([^ ]\)\/\([^ ]\)/\1, \2/g
