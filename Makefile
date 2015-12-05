@@ -1,10 +1,10 @@
-all: u-0078-transcript.json u-0078.mp3 u-0080-transcript.json u-0080.mp3
+all: out/u-0078/transcript.json out/u-0078/audio.mp3 out/u-0080/transcript.json out/u-0080/audio.mp3
 
 clean:
-	rm -f \
+	rm -rf \
+	out \
 	u-*-transcript.json \
 	u-*-untimed.json \
-	u-*.mp3 \
 	u-*.speakers \
 	u-*.txt \
 	u-*.wav
@@ -40,6 +40,11 @@ u-%-transcript.json: u-%.wav u-%-untimed.json
 		> $@
 
 # Convert back to MP3 for use in the webapp.
-u-%.mp3: u-%.wav
-	lame $<
+out/u-%/audio.mp3: u-%.wav
+	mkdir -p out/u-$*
+	lame $< $@
 
+# Prepare transcript for use in webapp.
+out/u-%/transcript.json: u-%-transcript.json prepare-transcript.py
+	mkdir -p out/u-$*
+	./prepare-transcript.py $< 2>> preparation.log > $@

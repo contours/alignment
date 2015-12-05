@@ -2,6 +2,7 @@
 .gradle/
 .nb-gradle/
 build/
+out/
 *.mp3
 *.wav
 *-transcript.json
@@ -9,3 +10,4 @@ build/
 *.speakers
 *.txt
 alignment.log
+preparation.log
