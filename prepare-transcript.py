@@ -144,7 +144,8 @@ def adjust_timings(speech):
         elif prev is not None:
             yield prev
     if not skip:
-        yield curr
+        if curr is not None:
+            yield curr
 
 
 def prepare(o):
@@ -156,24 +157,24 @@ def prepare(o):
     # titlecase speakers' names
     p['speakers'] = [s.title() for s in o['speakers']]
 
+    # fix issues in speech timings
     p['turns'] = []
-    print(list(adjust_timings(speech_of(o))), file=sys.stderr)
-    # for speaker, speech in groupby(adjust_timings(speech_of(o)),
-    #                                key=lambda x: x['speaker']):
-    #     speech = list(speech)
-    #     turn = {'speaker': speaker,
-    #             'sentences': speech[0]['sentences'],
-    #             'start': speech[0]['start'],
-    #             'end': speech[-1]['end']}
-    #     for s in speech:
-    #         del s['speaker']
-    #         del s['sentences']
-    #     turn['speech'] = speech
-    #     p['turns'].append(turn)
+    for speaker, speech in groupby(adjust_timings(speech_of(o)),
+                                   key=lambda x: x['speaker']):
+        speech = list(speech)
+        sentences = speech[0]['sentences']
+        speech = [exclude(s, 'speaker', 'sentences') for s in speech]
+        turn = {'speaker': speaker,
+                'sentences': sentences,
+                'start': speech[0]['start'],
+                'end': speech[-1]['end']}
+        turn['speech'] = speech
+        p['turns'].append(turn)
+
+    return p
 
 
 o = json.load(open(sys.argv[1]))
 p = prepare(o)
 
-
-# print(json.dumps(p, indent=4))
+print(json.dumps(p, indent=4))
