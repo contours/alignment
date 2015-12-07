@@ -48,7 +48,7 @@ def merge(objects):
         yield merged
 
 
-def downscale_time(objects, factor=100):
+def downscale_time_resolution(objects, factor=1000):
     for o in objects:
         if o is None:
             yield None
@@ -111,7 +111,8 @@ def speech_of(o):
 def adjust_timings(speech):
     skip = 0
     prev, curr, next = None, None, None
-    for prev, curr, next in [downscale_time(w) for w in windows(speech)]:
+    for prev, curr, next in [downscale_time_resolution(w)
+                             for w in windows(speech)]:
         if skip > 0:
             skip = skip - 1
             continue
