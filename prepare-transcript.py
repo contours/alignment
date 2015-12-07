@@ -61,11 +61,20 @@ def downscale_time_resolution(objects, factor=1000):
             yield downscaled
 
 
+def exclude(o, *keys):
+    c = o.copy()
+    for key in keys:
+        del c[key]
+    return c
+
+
 def show(o, highlight=False):
+    if o is None:
+        return
     if highlight:
         print(Fore.RED, file=sys.stderr, end='')
     print('START:\t%s' % o['start'], file=sys.stderr)
-    pprint(o, stream=sys.stderr)
+    pprint(exclude(o, 'sentences', 'tokens'), stream=sys.stderr)
     print('END:\t%s' % o['end'], file=sys.stderr)
     if highlight:
         print(Style.RESET_ALL, file=sys.stderr, end='')
