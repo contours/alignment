@@ -3,7 +3,7 @@
 import io
 import sys
 import json
-from itertools import tee, chain, groupby, zip_longest
+from itertools import tee, chain, groupby
 from difflib import ndiff
 from pprint import pprint
 
@@ -165,7 +165,5 @@ def prepare(o):
 o = json.load(open(sys.argv[1]))
 p = prepare(o)
 
-# for ot, pt in zip_longest(o['turns'], p['turns']):
-#    diff_on_key(ot, pt, 'sentences')
 
 # print(json.dumps(p, indent=4))
