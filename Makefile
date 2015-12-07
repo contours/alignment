@@ -29,11 +29,11 @@ u-%.txt:
 	./cleantext.sed < ../corenlp/data/in/U-$*.txt > $@
 
 # Create a JSON transcript without speech timings.
-u-%-untimed.json: u-%.speakers u-%.txt
+u-%-untimed.json: u-%.speakers u-%.txt create-transcript-json.py
 	./create-transcript-json.py $+ | jq --sort-keys '' > $@
 
 # Align the audio and the transcript, updating the transcript file.
-u-%-transcript.json: u-%.wav u-%-untimed.json
+u-%-transcript.json: u-%.wav u-%-untimed.json build/libs/alignment.jar
 	java -ea -Xmx8g -jar build/libs/alignment.jar \
 		$< u-$*-alignment.json $(word 2,$^) \
 		2>> alignment.log \
