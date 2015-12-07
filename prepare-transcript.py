@@ -56,8 +56,8 @@ def downscale_time_resolution(objects, factor=1000):
             downscaled = {}
             downscaled.update(o)
             downscaled.update(
-                start=o['start'] // factor,
-                end=o['end'] // factor)
+                start=round(o['start'] / factor),
+                end=round(o['end'] / factor))
             yield downscaled
 
 
