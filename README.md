@@ -23,4 +23,4 @@ This jar can be built using [Gradle](https://gradle.org), see `build.gradle`. It
 ----
 `prepare-transcript.py`
 
-Prepares a transcript JSON file for use with [react-transcript-player](https://github.com/contours/react-transcript-player) , adding a link to the audio file, titlecasing speakers' names, and fixing issues in speech timings, e.g.: `./prepare-transcript.py out/u-0080/transcript.json`
+Prepares a transcript JSON file for use with [react-transcript-player](https://github.com/contours/react-transcript-player) , adding a link to the audio file, titlecasing speakers' names, and fixing issues in speech timings.
